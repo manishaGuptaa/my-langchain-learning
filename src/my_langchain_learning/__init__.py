@@ -1,10 +1,14 @@
+import tavily
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_ollama import ChatOllama
+from tavily import TavilyClient
 
 load_dotenv()
+
+tavily = TavilyClient()
 
 @tool
 def search(query: str) -> str:
@@ -16,7 +20,8 @@ def search(query: str) -> str:
         The search result
     """
     print(f"Searching for {query}")
-    return "24K gold: ₹14,640 per gram"
+    return tavily.search(query=query)
+
 
 llm = ChatOllama(temperature=0,model="gpt-oss")
 tools = [search]
